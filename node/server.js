@@ -2,8 +2,8 @@ require('dotenv').config();
 
 const express = require("express")
 
-// const connectDb = require("./db");
-// const userRoute = require("./routes/userRoute");
+const connectDb = require("./db");
+const userRoute = require("./routes/userRoute");
 // const faqRoute = require("./routes/faqRoute");
 
 const app = express();
@@ -11,9 +11,9 @@ app.use(express.json())
 
 const PORT = process.env.PORT; 
 
-// connectDb();
+connectDb();
 
-// app.use("/user",userRoute);
+app.use("/user",userRoute);
 // app.use("/",faqRoute);
 
 
