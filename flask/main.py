@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from src.news import News
-from src.faq_chatbot import FAQChatBot
-from src.excelhandler import ExcelHandler
+from src.newsHandler import News
+from src.faqHandler import FAQChatBot
+from src.excelHandler import ExcelHandler
 
 app = Flask(__name__)
 CORS(app)
