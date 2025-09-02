@@ -7,10 +7,10 @@ const upload = require("../middleware/multerMiddleware"); // Import Multer middl
 
 router.post("/register",userController.createUser);
 router.post("/login",userController.verifyUser);
-router.get("/dashboard",authMiddleware,userController.getDashboard);
 router.post("/financial-insights", authMiddleware, userController.getFinancialInsights);
 router.post("/upload", authMiddleware, upload.single("file"), userController.uploadFile);
-router.post("/portalRecharge", authMiddleware, userController.portalRecharge);
+// router.post("/portalRecharge", authMiddleware, userController.portalRecharge);
+// router.get("/dashboard",authMiddleware,userController.getDashboard);
 
 
 

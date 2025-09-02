@@ -7,7 +7,7 @@ const TransactionSchema = new mongoose.Schema({
             balance: { type: String, required: true },
             date: { type: String, required: true },
             deposits: { type: String, default: "0.00" },
-            description: { type: String, required: true },
+            particulars: { type: String, required: true },
             withdrawals: { type: String, default: "0.00" }
         }
     ]

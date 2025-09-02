@@ -1,4 +1,4 @@
-from newsapi import NewsApiClient
+from newsdataapi import NewsDataApiClient
 import os
 from dotenv import load_dotenv
 from typing import List
@@ -9,7 +9,7 @@ key = os.getenv("NEWS_API")
 class News:
     def __init__(self):
         self.key = key
-        self.newsapi = NewsApiClient(api_key=key)
+        self.newsapi = NewsDataApiClient(apikey=key)
 
     # for getting the top headlines based on user preferences
     def get_top_headlines(self, preferences: List[str]) -> List[dict]:
@@ -56,8 +56,9 @@ class News:
         result = []
         threshold = 5
         for preference in preferences:
-            everything = self.newsapi.get_everything(language="en", q=preference)
-            required = everything["articles"]
+            everything = self.newsapi.news_api(language="en", q=preference,country="in")
+            
+            required = everything["results"]
             cnt = 0
             
             for each in required:
@@ -66,12 +67,10 @@ class News:
                 cnt += 1
                 result.append(
                     {
-                        "author": each["author"],
-                        "publishedAt": each["publishedAt"],
                         "title": each["title"],
                         "description": each["description"],
-                        "url": each["url"],
-                        "urlToImage": each["urlToImage"],
+                        "url": each["link"],
+                        "urlToImage": each["image_url"],
                     }
                 )
         return result

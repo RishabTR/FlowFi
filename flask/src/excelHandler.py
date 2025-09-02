@@ -3,10 +3,12 @@ import os
 
 class ExcelHandler:
     def __init__(self):
-        self.folder_path = "flask_backend/src/data/"
-        self.required_columns = ['date', 'description', 'withdrawals', 'deposits', 'balance']
+        self.folder_path = "src/data/"
+        # self.folder_path = "../../../FlowFi - Backend/flask/src/data"
+        self.required_columns = ['date', 'particulars', 'withdrawals', 'deposits', 'balance']
     
     def getFiles(self):
+        print("in getFiles()")
         """
         Function to get the files from the folder
         Inputs:
@@ -14,11 +16,14 @@ class ExcelHandler:
         Outputs:
             List of files
         """
+        print(os.getcwd())
         files = os.listdir(self.folder_path)
+        
         files = [
             os.path.join(self.folder_path, f) for f in files 
             if (f.endswith(".xlsx") or f.endswith(".xls")) and os.path.isfile(os.path.join(self.folder_path, f))
         ]
+        # print(files)
         return files
     
     def validateExcel(self, file):
@@ -30,7 +35,9 @@ class ExcelHandler:
             boolean value
         """
         data = pd.read_excel(file)
+        # print(data)
         columns = data.columns
+        # print(columns)
         columns = [column.lower() for column in columns]
         for column in self.required_columns:
             if column not in columns:
@@ -70,13 +77,17 @@ class ExcelHandler:
         Outputs:
             json data
         """
+        # print("in get_json()")
         files = self.getFiles()
         data = pd.DataFrame()
+        # print(data)
         incorrect = 0
         for file in files:
             if self.validateExcel(file):
+                # print("goes in")
                 data = pd.concat([data, self.getData(file)])
             else:
+                # print("always not")
                 incorrect += 1
         if incorrect > 0:
             print(f"{incorrect} files are incorrect")
@@ -86,5 +97,6 @@ class ExcelHandler:
         data = data.to_dict(orient = 'records')
         self.delete_files(self.folder_path)                    # deleting the files after reading
         
+        # print(data)
         return data
         

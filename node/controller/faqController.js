@@ -1,6 +1,10 @@
 const faqService = require("../service/faqService");
 
+
+//checked working
+
 exports.handleFAQRequest = async(req, res) =>{
+    
     try {
         const { user_query } = req.body;
         {{console.log(user_query)}}

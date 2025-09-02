@@ -2,19 +2,25 @@
 const userService = require("../service/userService")
 const transactionService = require("../service/transactionService");
 
+
+//checked working
+
 exports.createUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            res.status(400).json({ message: "Please provide all the details" });
+            return res.status(400).json({ message: "Please provide all the details" });
         }
         const user = await userService.createUser(name, email, password);
-        res.status(201).json({ message: user.message });
+        return res.status(201).json({ message: user.message });
     } catch (err) {
 
-        res.status(500).json({ message: err.message });
+        return res.status(500).json({ message: err.message });
     }
 }
+
+
+//checked working
 
 exports.verifyUser = async (req, res) => {
     try {
@@ -28,6 +34,9 @@ exports.verifyUser = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 }
+
+
+//checked working
 
 exports.getFinancialInsights = async (req, res) => {
     try {
@@ -60,6 +69,8 @@ exports.getFinancialInsights = async (req, res) => {
     }
 };
 
+//checked working
+
 exports.uploadFile = async (req, res) => {
     try {
         if (!req.file) {
@@ -70,8 +81,11 @@ exports.uploadFile = async (req, res) => {
         const filePath = await userService.saveExcelFile(req.file);
         const response = await fetch(process.env.FLASK_URL + "/triggerExcel", {
             method: "POST",
-        });
+        }); 
+
         const data = await response.json();
+
+        console.log(data);
         if (!req.user || !req.user.email) {
             return res.status(401).json({ error: "Unauthorized - No user email" });
         }
@@ -84,26 +98,28 @@ exports.uploadFile = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
-exports.portalRecharge = async (req, res) => {
-    try {
-        const { amount } = req.body;
-        if (!amount) {
-            return res.status(400).json({ error: "Amount is required" });
-        }
 
-        const result = await walletService.rechargeWallet(userId, amount);
-        res.json(result);
 
-    } catch (err) {
-        console.error("Error in portalRecharge:", err);
-        res.status(500).json({ message: err.message });
-    }
-};
+// exports.portalRecharge = async (req, res) => {
+//     try {
+//         const { amount } = req.body;
+//         if (!amount) {
+//             return res.status(400).json({ error: "Amount is required" });
+//         }
 
-exports.getDashboard = async (req, res) => {
-    try {
-        res.status(200).json({ message: "Welcome to the dashboard" });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
+//         const result = await walletService.rechargeWallet(userId, amount);
+//         res.json(result);
+
+//     } catch (err) {
+//         console.error("Error in portalRecharge:", err);
+//         res.status(500).json({ message: err.message });
+//     }
+// };
+
+// exports.getDashboard = async (req, res) => {
+//     try {
+//         res.status(200).json({ message: "Welcome to the dashboard" });
+//     } catch (err) {
+//         res.status(500).json({ message: err.message });
+//     }
+// }
